@@ -1,5 +1,5 @@
 from datetime import date
-from views import Index, About, Cont, Cont1
+from views import Index, About, Reg, Cont1
 
 
 # front controller
@@ -18,6 +18,6 @@ fronts = [secret_front, other_front, strange_front]
 routes = {
     '/': Index(),
     '/about/': About(),
-    '/cont/': Cont(),
+    '/reg/': Reg(),
     '/conta/': Cont1(),
 }

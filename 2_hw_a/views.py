@@ -10,9 +10,9 @@ class About:
     def __call__(self, request):
         return '200 OK', 'about'
 
-class Cont:
+class Reg:
     def __call__(self, request):
-        return '200 OK', render('contacts.html', data=request.get('data', None))
+        return '200 OK', render('regs.html', data=request.get('data', None))
 
 class Cont1:
     def __call__(self, request):
