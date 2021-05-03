@@ -1,4 +1,4 @@
-from simba_framework.templator import render
+from course_framework.templator import render
 
 
 class Index:
