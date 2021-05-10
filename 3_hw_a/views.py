@@ -1,4 +1,4 @@
-from cources_framework3.templator import render_to_templ
+from cources_framework4.templator import render_to_templ
 
 
 class Index:

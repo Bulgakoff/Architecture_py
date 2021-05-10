@@ -59,7 +59,7 @@ class Framework:
         # отработка паттерна front controller
         for front in self.fronts_lst:
             front(request)
-        print(request)
+        print(f'++++++++++++++++{request}')
         # запуск контроллера с передачей объекта request
         code, body = view(request)
         start_response(code, [('Content-Type', 'text/html')])
