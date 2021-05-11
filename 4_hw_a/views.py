@@ -1,62 +1,65 @@
 from datetime import date
 
-from cources_framework4.templator import render_to_templ
-from patterns.cp import Engine, Logger
+from simba_framework44.templator import render_to_template
+from patterns.СЃreational_patterns import Engine, Logger
 
 site = Engine()
 logger = Logger('main')
 
 
+# РєРѕРЅС‚СЂРѕР»Р»РµСЂ - РіР»Р°РІРЅР°СЏ СЃС‚СЂР°РЅРёС†Р°
 class Index:
     def __call__(self, request):
-        return '200 OK', render_to_templ('index.html', objects_list=site.categories)
-
-# schedule
-class TablePrograms:
-    def __call__(self, request):
-        return '200 OK', render_to_templ('first.html', data=date.today())
+        return '200 OK', render_to_template('index.html', objects_list=site.categories)
 
 
+# РєРѕРЅС‚СЂРѕР»Р»РµСЂ "Рћ РїСЂРѕРµРєС‚Рµ"
 class About:
     def __call__(self, request):
-        return '200 OK', render_to_templ('about.html', data=request.get('data', None))
+        return '200 OK', render_to_template('about.html')
 
 
 class Reg:
     def __call__(self, request):
-        return '200 OK', render_to_templ('regs.html', data=request.get('data', None))
+        return '200 OK', render_to_template('regs.html', data=request.get('data', None))
 
-
+# РєРѕРЅС‚СЂРѕР»РµСЂ РєРѕРЅС‚Р°РєС‚РѕРІ
 class Cont1:
     def __call__(self, request):
-        return '200 OK', render_to_templ('cont_1.html', data=request.get('data', None))
+        return '200 OK', render_to_template('cont_1.html', data=request.get('data', None))
 
 
+# РєРѕРЅС‚СЂРѕР»Р»РµСЂ - Р Р°СЃРїРёСЃР°РЅРёСЏ
+class StudyPrograms:
+    def __call__(self, request):
+        return '200 OK', render_to_template('table_prog.html', data=date.today())
 
+
+# РєРѕРЅС‚СЂРѕР»Р»РµСЂ 404
 class NotFound404:
     def __call__(self, request):
         return '404 WHAT', '404 PAGE Not Found'
 
 
-# контроллер - список курсов
+# РєРѕРЅС‚СЂРѕР»Р»РµСЂ - СЃРїРёСЃРѕРє РєСѓСЂСЃРѕРІ
 class CoursesList:
     def __call__(self, request):
-        logger.log('list course')
-        print(f'==============={request}')
+        logger.log('РЎРїРёСЃРѕРє РєСѓСЂСЃРѕРІ')
         try:
             category = site.find_category_by_id(int(request['request_params']['id']))
-            return '200 OK', render_to_templ('course_list.html', objects_list=category.courses, name=category.name, id=category.id)
+            return '200 OK', render_to_template('course_list.html', objects_list=category.courses, name=category.name,
+                                    id=category.id)
         except KeyError:
             return '200 OK', 'No courses have been added yet'
 
 
-# контроллер - создать курс
+# РєРѕРЅС‚СЂРѕР»Р»РµСЂ - СЃРѕР·РґР°С‚СЊ РєСѓСЂСЃ
 class CreateCourse:
     category_id = -1
 
     def __call__(self, request):
         if request['method'] == 'POST':
-            # метод пост
+            # РјРµС‚РѕРґ РїРѕСЃС‚
             data = request['data']
 
             name = data['name']
@@ -69,7 +72,7 @@ class CreateCourse:
                 course = site.create_course('record', name, category)
                 site.courses.append(course)
 
-            return '200 OK', render_to_templ('course_list.html', objects_list=category.courses,
+            return '200 OK', render_to_template('course_list.html', objects_list=category.courses,
                                     name=category.name, id=category.id)
 
         else:
@@ -77,19 +80,19 @@ class CreateCourse:
                 self.category_id = int(request['request_params']['id'])
                 category = site.find_category_by_id(int(self.category_id))
 
-                return '200 OK', render_to_templ('create_course.html', name=category.name, id=category.id)
+                return '200 OK', render_to_template('create_course.html', name=category.name, id=category.id)
             except KeyError:
                 return '200 OK', 'No categories have been added yet'
 
 
-# контроллер - создать категорию
+# РєРѕРЅС‚СЂРѕР»Р»РµСЂ - СЃРѕР·РґР°С‚СЊ РєР°С‚РµРіРѕСЂРёСЋ
 class CreateCategory:
     def __call__(self, request):
         if request['method'] == 'POST':
             # POST
-            print(f' from hw4 ================={request}')
+            print(f' from qwe444 ================={request}')
             data = request['data']
-            print(f'request["data"] = data(value) ===from hw4====+++++++++++++>{data}')
+            print(f'request["data"] = data(value) ===from qwe444====+++++++++++++>{data}')
 
             name = data['name']
             name = site.decode_value(name)
@@ -104,19 +107,20 @@ class CreateCategory:
 
             site.categories.append(new_category)
 
-            return '200 OK', render_to_templ('index.html', objects_list=site.categories)
+            return '200 OK', render_to_template('index.html', objects_list=site.categories)
         else:
             categories = site.categories
-            return '200 OK', render_to_templ('create_category.html', categories=categories)
+            return '200 OK', render_to_template('create_category.html', categories=categories)
 
-# контроллер - список категорий
+
+# РєРѕРЅС‚СЂРѕР»Р»РµСЂ - СЃРїРёСЃРѕРє РєР°С‚РµРіРѕСЂРёР№
 class CategoryList:
     def __call__(self, request):
-        logger.log('list category')
-        return '200 OK', render_to_templ('category_list.html', objects_list=site.categories)
+        logger.log('РЎРїРёСЃРѕРє РєР°С‚РµРіРѕСЂРёР№')
+        return '200 OK', render_to_template('category_list.html', objects_list=site.categories)
 
 
-# контроллер - копировать курс
+# РєРѕРЅС‚СЂРѕР»Р»РµСЂ - РєРѕРїРёСЂРѕРІР°С‚СЊ РєСѓСЂСЃ
 class CopyCourse:
     def __call__(self, request):
         request_params = request['request_params']
@@ -130,6 +134,6 @@ class CopyCourse:
                 new_course.name = new_name
                 site.courses.append(new_course)
 
-            return '200 OK', render_to_templ('course_list.html', objects_list=site.courses)
+            return '200 OK', render_to_template('course_list.html', objects_list=site.courses)
         except KeyError:
             return '200 OK', 'No courses have been added yet'
