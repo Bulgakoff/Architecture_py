@@ -1,8 +1,5 @@
 import quopri
-
-from icecream import ic
-
-from cources_framework4.requests import GetRequests, PostRequests
+from simba_framework44.requests import GetRequests, PostRequests
 
 
 class PageNotFound404:
@@ -11,6 +8,7 @@ class PageNotFound404:
 
 
 class Framework:
+
     """Класс Framework - основа фреймворка"""
 
     def __init__(self, routes_obj, fronts_obj):
@@ -28,24 +26,18 @@ class Framework:
         request = {}
         # Получаем все данные запроса
         method = environ['REQUEST_METHOD']
+
         request['method'] = method
-        ic(method) # GET or POST
 
         if method == 'POST':
-            # ic(environ)
-            data = PostRequests().get_request_params(environ)  #: return py dict
+            data = PostRequests().get_request_params(environ)
             request['data'] = data
-            ic(f'Нам пришёл post-запрос: {Framework.decode_value(data)}')
-            # print(f'Нам пришёл post-запрос: {data}')
-            ic(request)
-            # {'name': 'qwe', 'email': 'qaz%40mail.com', 'location': 'ny'}
-            ic(type(data)) # <class 'dict'>
+
+            print(f'Нам пришёл post-запрос: {Framework.decode_value(data)}')
         if method == 'GET':
-            request_params = GetRequests().get_request_params(environ) #: dict
+            request_params = GetRequests().get_request_params(environ)
             request['request_params'] = request_params
-            #writen for GET: ?id=1&category=10
-            ic(f'Нам пришли GET-параметры: {request_params}')
-            # request_params= {'id': '1', 'category': '10'}
+            print(f'Нам пришли GET-параметры: {request_params}')
 
         # находим нужный контроллер
         # отработка паттерна page controller
@@ -53,20 +45,20 @@ class Framework:
             view = self.routes_lst[path]
         else:
             view = PageNotFound404()
-        # request = {}
+
         # наполняем словарь request элементами
         # этот словарь получат все контроллеры
         # отработка паттерна front controller
         for front in self.fronts_lst:
             front(request)
-        print(f'+++from 4_hw-a+++++++++++++{request}')
         # запуск контроллера с передачей объекта request
+        print(f'from fram 4444 --------------->{request}')
         code, body = view(request)
         start_response(code, [('Content-Type', 'text/html')])
         return [body.encode('utf-8')]
 
     @staticmethod
-    def decode_value(data) -> dict:
+    def decode_value(data):
         new_data = {}
         for k, v in data.items():
             val = bytes(v.replace('%', '=').replace("+", " "), 'UTF-8')
