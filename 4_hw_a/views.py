@@ -1,5 +1,7 @@
 from datetime import date
 
+from icecream import ic
+
 from simba_framework44.templator import render_to_template
 from patterns.сreational_patterns import Engine, Logger
 
@@ -96,8 +98,8 @@ class CreateCategory:
 
             name = data['name']
             name = site.decode_value(name)
-
             category_id = data.get('category_id')
+            ic(f'========category_id======.{category_id}')
 
             category = None
             if category_id:
