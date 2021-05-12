@@ -30,14 +30,14 @@ class Debug:
         '''
 
         # это вспомогательная функция будет декорировать каждый отдельный метод класса, см. ниже
-        def timeit(method):
+        def timeit(foo_class):
             '''
             нужен для того, чтобы декоратор класса wrapper обернул в timeit
             каждый метод декорируемого класса
             '''
             def timed(*args, **kw):
                 ts = time()
-                result = method(*args, **kw)
+                result = foo_class(*args, **kw)
                 te = time()
                 delta = te - ts
 
@@ -46,4 +46,4 @@ class Debug:
 
             return timed
 
-        return timeit(cls)
+        return timeit(foo_class=cls)
